@@ -43,3 +43,10 @@ export type EmployeesResult =
       data: Array<Employee>;
     }
   | GeneralApiProblem;
+
+export type EmployeeResult =
+  | {
+      kind: "ok";
+      data: Employee;
+    }
+  | GeneralApiProblem;

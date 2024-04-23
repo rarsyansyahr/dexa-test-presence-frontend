@@ -13,6 +13,12 @@ export type LoginProps = {
   password: string;
 };
 
+export type EmployeeForm = {
+  phone_number: string;
+  password?: string | null;
+  photo?: string | null;
+};
+
 export type SearchProps = {
   started_at?: string;
   ended_at?: string;

@@ -47,7 +47,7 @@ export const PresenceHistory: FC<{ className?: string }> = (props) => {
   return (
     <div className={props.className}>
       {/* @ts-ignore */}
-      {presences.length < 1 && (
+      {presences?.length < 1 && (
         <div className="md:text-base text-xs text-center flex flex-row items-center justify-center">
           <LuInfo className="md:mr-1.5 sm:mr-1 md:w-5 hidden md:block mr-0.5 md:h-5 w-3 h-3" />
           Kamu belum pernah malakukan presensi sebelumnya
@@ -55,7 +55,7 @@ export const PresenceHistory: FC<{ className?: string }> = (props) => {
       )}
 
       {/* @ts-ignore */}
-      {presences.length > 0 && (
+      {presences?.length > 0 && (
         <>
           <div className="font-semibold md:text-xl text-base">
             Riwayat Presensi

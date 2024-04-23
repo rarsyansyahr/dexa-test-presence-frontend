@@ -8,36 +8,29 @@ import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useEmployee, useUpdateEmployee } from "@/hooks";
+import { EmployeeForm } from "@/types";
+import { Cookie } from "@/lib";
 
 const schema = z.object({
   phone_number: z.string(),
   password: z.string().nullable(),
   photo: z.string().nullable(),
 });
-
-type EmployeeForm = {
-  phone_number: string;
-  password?: string | null;
-  photo?: string | null;
-};
-
 const EmployeeDetail: FC = () => {
+  const { id } = useParams();
   const router = useRouter();
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [image, setImage] = useState<File | null>(null);
-
-  const profile = {
-    name: "Rizky Arsyansyah Rinjani",
-    position: "Operator",
-    photo_path: "/images/male.png",
-    phone_number: "081283129837",
-    email: "andi@gmail.com",
-  };
+  // @ts-ignore
+  const { employee: profile, isLoading } = useEmployee(id);
+  const { update } = useUpdateEmployee();
 
   const defaultValues: EmployeeForm = {
-    phone_number: profile.phone_number,
+    // @ts-ignore
+    phone_number: profile?.phone_number,
     password: null,
     photo: null,
   };
@@ -47,6 +40,7 @@ const EmployeeDetail: FC = () => {
     handleSubmit,
     formState: { isValid },
     reset,
+    resetField,
   } = useForm<EmployeeForm>({
     defaultValues,
     resolver: zodResolver(schema),
@@ -58,8 +52,12 @@ const EmployeeDetail: FC = () => {
     reset(defaultValues);
   };
 
-  const onSubmit = (values: any) => {
-    alert(JSON.stringify(values));
+  const onSubmit = async (values: EmployeeForm) => {
+    // @ts-ignore
+    await update({ id: profile?.id, ...values });
+    resetField("password");
+    resetField("photo");
+    setIsEdit(false);
   };
 
   const onUpload = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -85,11 +83,14 @@ const EmployeeDetail: FC = () => {
     }
   };
 
+  if (isLoading) return <div>Loading</div>;
+
   return (
     <>
       <div className="flex flex-col justify-center items-center mb-4 md:mb-6">
         <Image
-          src={image ? URL.createObjectURL(image) : profile.photo_path}
+          // @ts-ignore
+          src={image ? URL.createObjectURL(image) : profile?.photo_path}
           width={200}
           height={200}
           alt="Profile Photo"
@@ -115,7 +116,7 @@ const EmployeeDetail: FC = () => {
             id="name"
             disabled
             className="mt-1 md:mt-2"
-            value={profile.name}
+            value={profile?.name}
           />
         </div>
 
@@ -126,7 +127,8 @@ const EmployeeDetail: FC = () => {
             id="email"
             disabled
             className="mt-1 md:mt-2"
-            value={profile.email}
+            // @ts-ignore
+            value={profile?.email}
           />
         </div>
 
@@ -136,7 +138,7 @@ const EmployeeDetail: FC = () => {
             id="position"
             disabled
             className="mt-1 md:mt-2"
-            value={profile.position}
+            value={profile?.position}
           />
         </div>
 

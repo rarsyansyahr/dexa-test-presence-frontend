@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useProfile, useUpdateEmployee } from "@/hooks";
 import { Cookie } from "@/lib";
+import { EmployeeForm } from "@/types";
 
 const schema = z.object({
   phone_number: z.string(),
@@ -17,19 +18,13 @@ const schema = z.object({
   photo: z.string().nullable(),
 });
 
-type ProfileForm = {
-  phone_number: string;
-  password?: string | null;
-  photo?: string | null;
-};
-
 const ProfilePage: FC = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [image, setImage] = useState<File | null>(null);
   const { isLoading, profile } = useProfile();
   const { update } = useUpdateEmployee();
 
-  const defaultValues: ProfileForm = {
+  const defaultValues: EmployeeForm = {
     // @ts-ignore
     phone_number: profile?.employee?.phone_number,
     password: null,
@@ -42,7 +37,7 @@ const ProfilePage: FC = () => {
     formState: { isValid },
     reset,
     resetField,
-  } = useForm<ProfileForm>({
+  } = useForm<EmployeeForm>({
     defaultValues,
     resolver: zodResolver(schema),
   });
@@ -53,7 +48,7 @@ const ProfilePage: FC = () => {
     reset(defaultValues);
   };
 
-  const onSubmit = async (values: ProfileForm) => {
+  const onSubmit = async (values: EmployeeForm) => {
     // @ts-ignore
     await update({ id: Cookie.getEmployeeId(), ...values });
     resetField("password");
