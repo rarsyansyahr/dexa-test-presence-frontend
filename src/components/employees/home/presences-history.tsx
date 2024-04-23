@@ -30,7 +30,11 @@ export const PresenceHistory: FC<{ className?: string }> = (props) => {
 
       {presences.length > 0 && (
         <>
-          <div className="flex flex-row justify-evenly md:justify-center gap-2 items-end md:mt-4 mt-2 md:mb-3 mb-2">
+          <div className="font-semibold md:text-xl text-base">
+            Riwayat Presensi
+          </div>
+
+          <div className="flex flex-col md:flex-row justify-center md:justify-center gap-2 items-start md:items-end md:mt-4 mt-2 md:mb-3 mb-2">
             <div>
               <Label id="startDate" className="md:text-base text-sm">
                 Tanggal Awal

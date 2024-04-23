@@ -5,7 +5,7 @@ import React, { FC, createContext, useContext, useState } from "react";
 import { IconType } from "react-icons/lib";
 import { LuChevronFirst, LuChevronLast, LuLogOut } from "react-icons/lu";
 import Cookies from "js-cookie";
-import { Storage } from "@/lib";
+import { Cookie, Storage } from "@/lib";
 import { toast } from "react-toastify";
 
 const SidebarContext = createContext({ isExpanded: false });
@@ -17,8 +17,8 @@ const Sidebar: FC<{
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   return (
-    <aside className="h-screen">
-      <nav className="h-full flex flex-col bg-white border-r shadow-sm">
+    <aside className="min-h-screen">
+      <nav className="min-h-screen flex flex-col bg-white border-r shadow-sm">
         <div className="md:p-4 md:pb-2 p-3 pb-1 flex justify-between items-center">
           <Image
             src="/images/logo.png"
@@ -58,9 +58,11 @@ const Sidebar: FC<{
               }`}
             >
               <div className="md:leading-4 leading-3">
-                <h4 className="font-semibold md:text-base text-sm">John Doe</h4>
-                <span className="text-xs text-gray-600">
-                  johndoe@example.com
+                <h4 className="font-semibold md:text-base text-sm">
+                  {Cookie.getName() + Storage.load("accessToken")}
+                </h4>
+                <span className="text-xs text-gray-600 capitalize">
+                  {Cookie.getLevel()}
                 </span>
               </div>
             </div>

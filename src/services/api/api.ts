@@ -1,6 +1,7 @@
 import { ApisauceInstance, create } from "apisauce";
 import { ApiConfig, DEFAULT_API_CONFIG } from "./api-config";
 import { AppConfig } from "@/config";
+import { Cookie } from "@/lib";
 export class Api {
   selfApiSauce: ApisauceInstance;
 
@@ -9,13 +10,12 @@ export class Api {
   constructor() {
     this.config = DEFAULT_API_CONFIG;
 
-    console.info(this.config);
-
     this.selfApiSauce = create({
       baseURL: AppConfig.api.baseUrl,
       timeout: AppConfig.api.httpTimeout,
       headers: {
         Accept: "application/json",
+        Authorization: "Bearer " + Cookie.getAccessToken(),
       },
     });
   }

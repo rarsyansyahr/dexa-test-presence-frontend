@@ -1,4 +1,4 @@
-import { UserLevel } from "@/types";
+import { Profile, UserLevel } from "@/types";
 import { GeneralApiProblem } from "./api-problem";
 
 export type OkResult =
@@ -15,5 +15,12 @@ export type LoginResult =
         email: string;
         name: string;
       };
+    }
+  | GeneralApiProblem;
+
+export type ProfileResult =
+  | {
+      kind: "ok";
+      data: Profile;
     }
   | GeneralApiProblem;

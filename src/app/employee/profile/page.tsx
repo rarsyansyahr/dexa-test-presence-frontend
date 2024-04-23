@@ -4,10 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useProfile } from "@/hooks";
+import { Profile } from "@/types";
+import { Cookie, Storage } from "@/lib";
 
 const schema = z.object({
   phone_number: z.string(),
@@ -24,17 +27,10 @@ type ProfileForm = {
 const ProfilePage: FC = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [image, setImage] = useState<File | null>(null);
-
-  const profile = {
-    name: "Rizky Arsyansyah Rinjani",
-    position: "Operator",
-    photo_path: "/images/male.png",
-    phone_number: "081283129837",
-    email: "andi@gmail.com",
-  };
+  const { isLoading, profile } = useProfile();
 
   const defaultValues: ProfileForm = {
-    phone_number: profile.phone_number,
+    phone_number: profile?.employee?.phone_number,
     password: null,
     photo: null,
   };
@@ -82,11 +78,15 @@ const ProfilePage: FC = () => {
     }
   };
 
+  if (isLoading) return <div>Loading</div>;
+
   return (
     <>
       <div className="flex flex-col justify-center items-center mb-4 md:mb-6">
         <Image
-          src={image ? URL.createObjectURL(image) : profile.photo_path}
+          src={
+            image ? URL.createObjectURL(image) : profile?.employee.photo_path
+          }
           width={200}
           height={200}
           alt="Profile Photo"
@@ -112,7 +112,7 @@ const ProfilePage: FC = () => {
             id="name"
             disabled
             className="mt-1 md:mt-2"
-            value={profile.name}
+            value={profile?.name}
           />
         </div>
 
@@ -123,7 +123,7 @@ const ProfilePage: FC = () => {
             id="email"
             disabled
             className="mt-1 md:mt-2"
-            value={profile.email}
+            value={profile?.email}
           />
         </div>
 
@@ -133,7 +133,7 @@ const ProfilePage: FC = () => {
             id="position"
             disabled
             className="mt-1 md:mt-2"
-            value={profile.position}
+            value={profile?.employee?.position}
           />
         </div>
 

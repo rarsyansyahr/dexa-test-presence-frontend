@@ -8,7 +8,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Image from "next/image";
-import { LoginProps, useLogin } from "@/hooks";
+import { useLogin } from "@/hooks";
+import { LoginProps } from "@/types";
 
 const schema = z.object({
   email: z.string().email(),

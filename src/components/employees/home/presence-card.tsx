@@ -11,7 +11,7 @@ const PresenceCardItem: FC<{ type: "in" | "out"; value?: string }> = (
         props.value ? "bg-blue-400" : "bg-gray-200"
       } justify-center items-center`}
     >
-      <LuCheckCircle className="md:w-10 md:h-10 w-8 h-8" color="white" />
+      <LuCheckCircle className="md:w-10 md:h-10 w-6 h-6" color="white" />
     </div>
 
     <div
@@ -19,10 +19,10 @@ const PresenceCardItem: FC<{ type: "in" | "out"; value?: string }> = (
         props.value ? "text-black" : "text-gray-500"
       }`}
     >
-      <div className="md:text-lg text-base">
+      <div className="md:text-lg text-sm">
         {props.type === "in" ? "Datang" : "Pulang"}
       </div>
-      <div className="md:text-4xl text-2xl font-semibold">
+      <div className="md:text-4xl text-xl font-semibold">
         {props.value ? props.value : "-- : --"}
       </div>
     </div>
@@ -40,7 +40,7 @@ export const PresenceCard: FC<{ className?: string }> = (props) => {
       </div>
 
       <div className="w-full">
-        <div className="flex flex-row justify-evenly items-center mt-6">
+        <div className="flex flex-row justify-evenly items-center mt-6 md:mt-10">
           <PresenceCardItem type="in" value={dayjs().format("HH:mm")} />
           <PresenceCardItem type="out" />
         </div>

@@ -1,13 +1,9 @@
 import { ApiResponse } from "apisauce";
 import { Api } from "./api";
 import { getGeneralApiProblem } from "./api-problem";
-import { LoginResult, OkResult } from "./api.types";
+import { LoginResult, OkResult, ProfileResult } from "./api.types";
 import { AppConfig } from "@/config";
-
-type EmailSignIn = {
-  email: string;
-  password: string;
-};
+import { LoginProps } from "@/types";
 
 export class AuthApi {
   private readonly api: Api;
@@ -16,8 +12,29 @@ export class AuthApi {
     this.api = new Api();
   }
 
-  async signIn(props: EmailSignIn): Promise<LoginResult> {
-    console.info({ AppConfig });
+  async getProfile(): Promise<ProfileResult> {
+    try {
+      const { selfApiSauce, config } = this.api;
+
+      const response: ApiResponse<any> = await selfApiSauce.get(config.profile);
+
+      if (!response.ok) {
+        const problem = getGeneralApiProblem(response);
+        if (problem) return problem;
+      }
+
+      if (response.status === 404) return { kind: "not-found" };
+
+      const { data } = response;
+
+      return { kind: "ok", data };
+    } catch (error) {
+      console.error(error);
+      return { kind: "bad-data" };
+    }
+  }
+
+  async signIn(props: LoginProps): Promise<LoginResult> {
     try {
       const { selfApiSauce, config } = this.api;
 

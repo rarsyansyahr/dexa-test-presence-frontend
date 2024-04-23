@@ -4,12 +4,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { Storage } from "@/lib";
-import { UserLevel } from "@/types";
-
-export type LoginProps = {
-  email: string;
-  password: string;
-};
+import { LoginProps, UserLevel } from "@/types";
 
 export const useLogin = () => {
   const router = useRouter();
