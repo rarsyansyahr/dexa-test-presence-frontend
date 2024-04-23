@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import dayjs from "dayjs";
 import { LuInfo } from "react-icons/lu";
+import { Label } from "@/components/ui/label";
 
 export const PresenceHistory: FC<{ className?: string }> = (props) => {
   const presences = [
@@ -29,17 +30,22 @@ export const PresenceHistory: FC<{ className?: string }> = (props) => {
 
       {presences.length > 0 && (
         <>
-          <div className="md:text-xl text-base font-semibold">
-            Riwayat Presensi
-          </div>
-
-          <div className="flex flex-row justify-evenly items-center md:mt-4 mt-2 md:mb-3 mb-1">
-            <Input type="date" placeholder="Tanggal Awal" />
-            <Input
-              type="date"
-              placeholder="Tanggal Akhir"
-              className="md:mx-4 mx-1.5"
-            />
+          <div className="flex flex-row justify-evenly md:justify-center gap-2 items-end md:mt-4 mt-2 md:mb-3 mb-2">
+            <div>
+              <Label id="startDate" className="md:text-base text-sm">
+                Tanggal Awal
+              </Label>
+              <Input
+                id="startDate"
+                className="md:text-base text-sm"
+                type="date"
+                placeholder="Tanggal Awal"
+              />
+            </div>
+            <div>
+              <Label id="endDate">Tanggal Akhir</Label>
+              <Input id="endDate" type="date" placeholder="Tanggal Akhir" />
+            </div>
             <Button size="sm">Cari</Button>
           </div>
 
