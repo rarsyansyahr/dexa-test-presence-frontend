@@ -87,7 +87,6 @@ export type SidebarItemProps = {
   active?: boolean;
   alert?: boolean;
   link?: string;
-  onClick?: () => void;
   logout?: boolean;
 };
 
