@@ -1,4 +1,4 @@
-import { PresenceApi } from "@/services/api/presence";
+import { PresenceApi } from "@/services/api";
 import { GetPresencesProps, Presence } from "@/types";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";

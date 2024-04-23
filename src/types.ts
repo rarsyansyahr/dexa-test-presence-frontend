@@ -18,6 +18,13 @@ export type SearchProps = {
   ended_at?: string;
 };
 
+export type UpdateEmployeeProps = {
+  id: string;
+  phone_number?: string;
+  photo_path?: string;
+  password?: string;
+};
+
 export type GetPresencesProps = SearchProps & {
   employeeId?: string;
 };

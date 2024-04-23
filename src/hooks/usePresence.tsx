@@ -1,4 +1,4 @@
-import { PresenceApi } from "@/services/api/presence";
+import { PresenceApi } from "@/services/api";
 import { PresenceStatus, PresenceTime } from "@/types";
 import React, { useState } from "react";
 import { toast } from "react-toastify";

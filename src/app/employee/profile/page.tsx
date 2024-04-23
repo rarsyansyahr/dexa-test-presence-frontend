@@ -8,7 +8,8 @@ import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useProfile } from "@/hooks";
+import { useProfile, useUpdateEmployee } from "@/hooks";
+import { Cookie } from "@/lib";
 
 const schema = z.object({
   phone_number: z.string(),
@@ -26,8 +27,10 @@ const ProfilePage: FC = () => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [image, setImage] = useState<File | null>(null);
   const { isLoading, profile } = useProfile();
+  const { update } = useUpdateEmployee();
 
   const defaultValues: ProfileForm = {
+    // @ts-ignore
     phone_number: profile?.employee?.phone_number,
     password: null,
     photo: null,
@@ -38,6 +41,7 @@ const ProfilePage: FC = () => {
     handleSubmit,
     formState: { isValid },
     reset,
+    resetField,
   } = useForm<ProfileForm>({
     defaultValues,
     resolver: zodResolver(schema),
@@ -49,8 +53,12 @@ const ProfilePage: FC = () => {
     reset(defaultValues);
   };
 
-  const onSubmit = (values: any) => {
-    alert(JSON.stringify(values));
+  const onSubmit = async (values: ProfileForm) => {
+    // @ts-ignore
+    await update({ id: Cookie.getEmployeeId(), ...values });
+    resetField("password");
+    resetField("photo");
+    setIsEdit(false);
   };
 
   const onUpload = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -82,7 +90,9 @@ const ProfilePage: FC = () => {
     <>
       <div className="flex flex-col justify-center items-center mb-4 md:mb-6">
         <Image
+          // @ts-ignore
           src={
+            // @ts-ignore
             image ? URL.createObjectURL(image) : profile?.employee.photo_path
           }
           width={200}

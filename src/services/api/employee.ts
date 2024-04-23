@@ -2,7 +2,7 @@ import { ApiResponse } from "apisauce";
 import { Api } from "./api";
 import { getGeneralApiProblem } from "./api-problem";
 import { LoginResult } from "./api.types";
-import { LoginProps } from "@/types";
+import { LoginProps, UpdateEmployeeProps } from "@/types";
 
 export class EmployeeApi {
   private readonly api: Api;
@@ -11,12 +11,12 @@ export class EmployeeApi {
     this.api = new Api();
   }
 
-  async signIn(props: LoginProps): Promise<LoginResult> {
+  async update(props?: UpdateEmployeeProps): Promise<LoginResult> {
     try {
       const { selfApiSauce, config } = this.api;
 
-      const response: ApiResponse<any> = await selfApiSauce.post(
-        config.signin,
+      const response: ApiResponse<any> = await selfApiSauce.put(
+        config.employees(props?.id),
         props
       );
 
@@ -24,8 +24,6 @@ export class EmployeeApi {
         const problem = getGeneralApiProblem(response);
         if (problem) return problem;
       }
-
-      if (response.status === 404) return { kind: "not-found" };
 
       const { data } = response;
 
