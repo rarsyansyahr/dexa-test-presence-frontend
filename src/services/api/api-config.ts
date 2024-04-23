@@ -12,7 +12,7 @@ export const DEFAULT_API_CONFIG = {
 
   // * Employee
   employees: (employeeId?: string) =>
-    `${employeePrefix}${employeeId && "/" + employeeId}`,
+    `${employeePrefix}${employeeId ? "/" + employeeId : ""}`,
 
   // * Presence
   presence: presencePrefix,

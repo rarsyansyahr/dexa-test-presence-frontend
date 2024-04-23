@@ -35,6 +35,9 @@ export default async function middleware(req: NextRequest) {
   if (!level && !publicRoutes.includes(path))
     return NextResponse.redirect(new URL(loginRoute, req.nextUrl));
 
+  if (level === UserLevel.Hr && path.startsWith(hrRoutePrefix + "/employees/"))
+    return NextResponse.next();
+
   if (level === UserLevel.Hr && !hrRoutes.includes(path))
     return NextResponse.redirect(new URL(hrRoutePrefix, req.nextUrl));
 

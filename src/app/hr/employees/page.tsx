@@ -10,17 +10,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
+import { useEmployees } from "@/hooks";
 
 const EmployeesPage: FC = () => {
-  const employees = [
-    {
-      name: "Rizky Arsyansyah Rinjani",
-      id: "1902839120",
-    },
-  ];
+  const { employees, isLoading } = useEmployees();
 
-  return (
-    <>
+  if (isLoading) return <div>Loading</div>;
+
+  if (employees)
+    return (
       <Table>
         <TableHeader>
           <TableRow>
@@ -46,8 +44,7 @@ const EmployeesPage: FC = () => {
           ))}
         </TableBody>
       </Table>
-    </>
-  );
+    );
 };
 
 export default EmployeesPage;

@@ -164,32 +164,34 @@ const EmployeeDetail: FC = () => {
         </div>
 
         <div className="mt-6 md:mt-8 flex flex-row justify-between items-center">
-          <div>
-            <Button
-              type="reset"
-              onClick={() => router.back()}
-              className="mr-2 md:mr-3"
-            >
-              Kembali
-            </Button>
-
-            {!isEdit && (
+          {!isEdit && (
+            <>
+              <Button
+                type="reset"
+                onClick={() => router.back()}
+                className="mr-2 md:mr-3"
+              >
+                Kembali
+              </Button>
               <Button className="bg-yellow-600" onClick={() => setIsEdit(true)}>
                 Edit
               </Button>
-            )}
+            </>
+          )}
 
-            {isEdit && (
+          {isEdit && (
+            <>
               <Button className="bg-red-500" onClick={onCancel}>
                 Batal
               </Button>
-            )}
-          </div>
-
-          {isEdit && (
-            <Button type="submit" className="bg-indigo-500" disabled={!isValid}>
-              Simpan Perubahan
-            </Button>
+              <Button
+                type="submit"
+                className="bg-indigo-500"
+                disabled={!isValid}
+              >
+                Simpan Perubahan
+              </Button>
+            </>
           )}
         </div>
       </form>

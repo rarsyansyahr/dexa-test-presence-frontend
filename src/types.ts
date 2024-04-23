@@ -29,12 +29,13 @@ export type GetPresencesProps = SearchProps & {
   employeeId?: string;
 };
 
-type Employee = {
+export type Employee = {
   id: string;
   phone_number: string;
   photo_path: string;
-  user_id: string;
+  user_id?: string;
   position: string;
+  name?: string;
 };
 
 export type Profile = {

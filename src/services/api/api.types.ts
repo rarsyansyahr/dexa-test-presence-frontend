@@ -1,4 +1,4 @@
-import { Presence, PresenceTime, Profile, UserLevel } from "@/types";
+import { Employee, Presence, PresenceTime, Profile, UserLevel } from "@/types";
 import { GeneralApiProblem } from "./api-problem";
 
 export type OkResult = { kind: "ok" } | GeneralApiProblem;
@@ -34,5 +34,12 @@ export type PresencesResult =
   | {
       kind: "ok";
       data: Array<Presence>;
+    }
+  | GeneralApiProblem;
+
+export type EmployeesResult =
+  | {
+      kind: "ok";
+      data: Array<Employee>;
     }
   | GeneralApiProblem;
