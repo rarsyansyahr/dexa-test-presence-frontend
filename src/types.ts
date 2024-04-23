@@ -53,4 +53,5 @@ export type PresenceTime = {
 export type Presence = PresenceTime & {
   date: string;
   created_at: string;
+  name: string;
 };

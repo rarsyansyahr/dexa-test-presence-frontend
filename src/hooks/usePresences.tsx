@@ -19,11 +19,13 @@ export const usePresences = (props?: GetPresencesProps) => {
 
       if (kind === "ok") {
         setPresences(
-          result.data.filter(
-            (item) =>
-              dayjs(item.created_at).format("YYYY-MM-DD") !==
-              dayjs().format("YYYY-MM-DD")
-          )
+          input?.employeeId || props?.employeeId
+            ? result.data.filter(
+                (item) =>
+                  dayjs(item.created_at).format("YYYY-MM-DD") !==
+                  dayjs().format("YYYY-MM-DD")
+              )
+            : result.data
         );
       }
     } catch (error) {
