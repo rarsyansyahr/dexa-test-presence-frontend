@@ -31,7 +31,7 @@ const EmployeeLayout: FC<PropsWithChildren> = (props) => {
 
   return (
     <main className="flex h-screen w-full bg-gray-100">
-      <Sidebar menus={menus} profile={false} />
+      <Sidebar menus={menus} />
 
       <div className="flex flex-col w-full h-full md:p-4 p-3">
         <div className="text-base md:text-lg font-semibold">

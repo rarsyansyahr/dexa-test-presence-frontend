@@ -6,9 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { useRouter } from "next/navigation";
+import { z } from "zod";
 import Image from "next/image";
+import { LoginProps, useLogin } from "@/hooks";
 
 const schema = z.object({
   email: z.string().email(),
@@ -19,18 +19,11 @@ const LoginPage: FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
-  } = useForm({
+    formState: { isValid },
+  } = useForm<LoginProps>({
     resolver: zodResolver(schema),
   });
-
-  const router = useRouter();
-
-  const onSubmit = (values: any) => {
-    console.info({ values });
-
-    router.replace("/employee/home");
-  };
+  const { onLogin, isLoading } = useLogin();
 
   return (
     <main className="min-h-screen bg-indigo-200 flex justify-center items-center">
@@ -45,7 +38,7 @@ const LoginPage: FC = () => {
           />
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onLogin)}>
           <div className="mt-6">
             <div>
               <Label htmlFor="email">Email</Label>
@@ -54,6 +47,7 @@ const LoginPage: FC = () => {
                 type="email"
                 placeholder="Email"
                 {...register("email")}
+                disabled={isLoading}
               />
             </div>
 
@@ -64,13 +58,14 @@ const LoginPage: FC = () => {
                 type="password"
                 placeholder="Password"
                 {...register("password")}
+                disabled={isLoading}
               />
             </div>
             <Button
               size="sm"
               className="mt-4"
               type="submit"
-              disabled={!isValid}
+              disabled={!isValid || isLoading}
             >
               Masuk
             </Button>

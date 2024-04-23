@@ -1,3 +1,4 @@
+import React from "react";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
@@ -6,6 +7,8 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import "dayjs/locale/id";
+import { ToastContainer, ToastOptions } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -19,6 +22,17 @@ dayjs.locale("id");
 export const metadata: Metadata = {
   title: "Presence App",
   description: "WFH Presence App",
+};
+
+const toastOptions: ToastOptions = {
+  position: "top-right",
+  autoClose: 2000,
+  hideProgressBar: true,
+  closeOnClick: true,
+  rtl: false,
+  pauseOnFocusLoss: true,
+  draggable: false,
+  pauseOnHover: true,
 };
 
 export default function RootLayout({
@@ -35,6 +49,7 @@ export default function RootLayout({
         )}
       >
         {children}
+        <ToastContainer {...toastOptions} />
       </body>
     </html>
   );

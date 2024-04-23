@@ -4,14 +4,16 @@ import { useRouter } from "next/navigation";
 import React, { FC, createContext, useContext, useState } from "react";
 import { IconType } from "react-icons/lib";
 import { LuChevronFirst, LuChevronLast, LuLogOut } from "react-icons/lu";
+import Cookies from "js-cookie";
+import { Storage } from "@/lib";
+import { toast } from "react-toastify";
 
 const SidebarContext = createContext({ isExpanded: false });
 
 const Sidebar: FC<{
   menus: Array<SidebarItemProps>;
-  profile?: boolean;
 }> = (props) => {
-  const { menus, profile = true } = props;
+  const { menus } = props;
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   return (
@@ -40,7 +42,7 @@ const Sidebar: FC<{
           </button>
         </div>
 
-        {isExpanded && profile && (
+        {isExpanded && (
           <div className="flex md:p-3 p-1.5 md:mx-1.5 mx-2 mb-4 sm:mb-2">
             <Image
               src="/images/female.png"
@@ -98,12 +100,18 @@ const SidebarItem: FC<SidebarItemProps> = (props) => {
     if (
       props.logout &&
       confirm("Apakah Anda yakin ingin keluar dari aplikasi ?")
-    )
+    ) {
+      const cookieKeys = ["user_id", "level", "access_token", "email", "name"];
+
+      cookieKeys.forEach((item) => Cookies.remove(item));
+      Storage.remove("accessToken");
+
+      toast.success("Terima kasih sudah menggunakan aplikasi");
+
       router.replace("/auth/login");
+    }
 
     if (props.link) router.push(props.link);
-
-    if (props.onClick) props.onClick();
   };
 
   return (
