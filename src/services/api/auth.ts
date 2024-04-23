@@ -58,26 +58,4 @@ export class AuthApi {
       return { kind: "bad-data" };
     }
   }
-
-  async signOut(): Promise<OkResult> {
-    try {
-      const { selfApiSauce, config } = this.api;
-
-      const response: ApiResponse<any> = await selfApiSauce.post(
-        config.signout
-      );
-
-      if (!response.ok) {
-        const problem = getGeneralApiProblem(response);
-        if (problem) return problem;
-      }
-
-      const { data } = response;
-
-      return { kind: "ok", data };
-    } catch (error) {
-      console.error(error);
-      return { kind: "bad-data" };
-    }
-  }
 }

@@ -4,14 +4,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useParams, useRouter } from "next/navigation";
-import { useEmployee, useUpdateEmployee } from "@/hooks";
+import { useEmployee, useUpdateEmployee, useUpload } from "@/hooks";
 import { EmployeeForm } from "@/types";
-import { Cookie } from "@/lib";
 
 const schema = z.object({
   phone_number: z.string(),
@@ -27,6 +26,7 @@ const EmployeeDetail: FC = () => {
   // @ts-ignore
   const { employee: profile, isLoading } = useEmployee(id);
   const { update } = useUpdateEmployee();
+  const { upload, filename } = useUpload();
 
   const defaultValues: EmployeeForm = {
     // @ts-ignore
@@ -41,6 +41,7 @@ const EmployeeDetail: FC = () => {
     formState: { isValid },
     reset,
     resetField,
+    setValue,
   } = useForm<EmployeeForm>({
     defaultValues,
     resolver: zodResolver(schema),
@@ -53,27 +54,23 @@ const EmployeeDetail: FC = () => {
   };
 
   const onSubmit = async (values: EmployeeForm) => {
-    // @ts-ignore
-    await update({ id: profile?.id, ...values });
+    await update({
+      // @ts-ignore
+      id: profile?.id,
+      ...values,
+      // @ts-ignore
+      photo_path: values.photo,
+    });
     resetField("password");
     resetField("photo");
     setIsEdit(false);
   };
 
   const onUpload = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // event.preventDefault();
-    // const url = "http://localhost:3000/uploadFile";
-    // const formData = new FormData();
-    // formData.append("file", image);
-    // formData.append("fileName", image!.name);
-    // const config = {
-    //   headers: {
-    //     "content-type": "multipart/form-data",
-    //   },
-    // };
-    // axios.post(url, formData, config).then((response) => {
-    //   console.log(response.data);
-    // });
+    event.preventDefault();
+    // @ts-ignore
+    upload(image);
+    resetField("photo");
   };
 
   const onChangeImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,6 +79,10 @@ const EmployeeDetail: FC = () => {
       setImage(file);
     }
   };
+
+  useEffect(() => {
+    setValue("photo", filename);
+  }, [filename]);
 
   if (isLoading) return <div>Loading</div>;
 

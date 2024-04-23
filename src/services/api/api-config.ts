@@ -3,6 +3,9 @@ export type ApiConfig = typeof DEFAULT_API_CONFIG;
 const authPrefix = "auth";
 const presencePrefix = "presences";
 const employeePrefix = "employees";
+const filePrefix = "files";
+
+// * Default API Config
 
 export const DEFAULT_API_CONFIG = {
   // * Auth
@@ -20,4 +23,7 @@ export const DEFAULT_API_CONFIG = {
     `${presencePrefix}${employeeId ? "/" + employeeId : ""}`,
   lastPresence: (employeeId: string) =>
     `${presencePrefix}/${employeeId}/status`,
+
+  // * File
+  files: filePrefix,
 };

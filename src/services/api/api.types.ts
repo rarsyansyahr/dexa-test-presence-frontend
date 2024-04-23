@@ -50,3 +50,12 @@ export type EmployeeResult =
       data: Employee;
     }
   | GeneralApiProblem;
+
+export type UploadResult =
+  | {
+      kind: "ok";
+      data: {
+        filename: string;
+      };
+    }
+  | GeneralApiProblem;

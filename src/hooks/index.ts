@@ -6,3 +6,4 @@ export * from "./usePresences";
 export * from "./useUpdateEmployee";
 export * from "./useEmployees";
 export * from "./useEmployee";
+export * from "./useUpload";

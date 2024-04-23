@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useProfile, useUpdateEmployee } from "@/hooks";
+import { useProfile, useUpdateEmployee, useUpload } from "@/hooks";
 import { Cookie } from "@/lib";
 import { EmployeeForm } from "@/types";
 
@@ -23,6 +23,7 @@ const ProfilePage: FC = () => {
   const [image, setImage] = useState<File | null>(null);
   const { isLoading, profile } = useProfile();
   const { update } = useUpdateEmployee();
+  const { upload, filename } = useUpload();
 
   const defaultValues: EmployeeForm = {
     // @ts-ignore
@@ -37,6 +38,7 @@ const ProfilePage: FC = () => {
     formState: { isValid },
     reset,
     resetField,
+    setValue,
   } = useForm<EmployeeForm>({
     defaultValues,
     resolver: zodResolver(schema),
@@ -49,27 +51,23 @@ const ProfilePage: FC = () => {
   };
 
   const onSubmit = async (values: EmployeeForm) => {
-    // @ts-ignore
-    await update({ id: Cookie.getEmployeeId(), ...values });
+    await update({
+      // @ts-ignore
+      id: Cookie.getEmployeeId(),
+      ...values,
+      // @ts-ignore
+      photo_path: values.photo,
+    });
     resetField("password");
     resetField("photo");
     setIsEdit(false);
   };
 
   const onUpload = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // event.preventDefault();
-    // const url = "http://localhost:3000/uploadFile";
-    // const formData = new FormData();
-    // formData.append("file", image);
-    // formData.append("fileName", image!.name);
-    // const config = {
-    //   headers: {
-    //     "content-type": "multipart/form-data",
-    //   },
-    // };
-    // axios.post(url, formData, config).then((response) => {
-    //   console.log(response.data);
-    // });
+    event.preventDefault();
+    // @ts-ignore
+    upload(image);
+    resetField("photo");
   };
 
   const onChangeImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,6 +78,10 @@ const ProfilePage: FC = () => {
   };
 
   if (isLoading) return <div>Loading</div>;
+
+  useEffect(() => {
+    setValue("photo", filename);
+  }, [filename]);
 
   return (
     <>
