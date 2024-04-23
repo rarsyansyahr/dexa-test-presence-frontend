@@ -1,10 +1,9 @@
 import clsx from "clsx";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { FC, createContext, useContext, useState } from "react";
 import { IconType } from "react-icons/lib";
-import { LuChevronFirst, LuChevronLast, LuMoreVertical } from "react-icons/lu";
+import { LuChevronFirst, LuChevronLast, LuLogOut } from "react-icons/lu";
 
 const SidebarContext = createContext({ isExpanded: false });
 
@@ -71,6 +70,8 @@ const Sidebar: FC<{
             {menus.map((menu, idx) => (
               <SidebarItem key={idx} {...menu} />
             ))}
+
+            <SidebarItem text="Keluar" icon={LuLogOut} logout />
           </ul>
         </SidebarContext.Provider>
       </nav>
@@ -87,22 +88,28 @@ export type SidebarItemProps = {
   alert?: boolean;
   link?: string;
   onClick?: () => void;
+  logout?: boolean;
 };
 
 const SidebarItem: FC<SidebarItemProps> = (props) => {
   const { isExpanded } = useContext(SidebarContext);
   const router = useRouter();
 
-  const handleClick = () => {
+  const onClick = () => {
+    if (
+      props.logout &&
+      confirm("Apakah Anda yakin ingin keluar dari aplikasi ?")
+    )
+      router.replace("/auth/login");
+
     if (props.link) router.push(props.link);
 
     if (props.onClick) props.onClick();
   };
 
   return (
-    <Link
-      href={props.link ?? "#"}
-      onClick={props.onClick}
+    <li
+      onClick={onClick}
       className={clsx(
         `relative flex justify-center items-center md:py-2 md:px-3 py-1.5 px-1 my-0.5 font-medium rounded-md cursor-pointer transition-colors`,
         {
@@ -137,6 +144,6 @@ const SidebarItem: FC<SidebarItemProps> = (props) => {
           {props.text}
         </div>
       )} */}
-    </Link>
+    </li>
   );
 };

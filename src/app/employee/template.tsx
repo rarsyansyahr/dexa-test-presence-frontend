@@ -1,13 +1,12 @@
 "use client";
 
 import Sidebar, { SidebarItemProps } from "@/components/sidebar";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React, { FC, PropsWithChildren } from "react";
-import { LuHome, LuLogOut, LuUser } from "react-icons/lu";
+import { LuHome, LuUser } from "react-icons/lu";
 
 const EmployeeLayout: FC<PropsWithChildren> = (props) => {
   const path = usePathname();
-  const router = useRouter();
 
   const menus: Array<SidebarItemProps> = [
     {
@@ -21,14 +20,6 @@ const EmployeeLayout: FC<PropsWithChildren> = (props) => {
       icon: LuUser,
       link: "/employee/profile",
       active: path === "/employee/profile",
-    },
-    {
-      text: "Keluar",
-      icon: LuLogOut,
-      onClick: () => {
-        if (confirm("Apakah Anda yakin ingin keluar dari aplikasi ?"))
-          router.replace("/auth/login");
-      },
     },
   ];
 
