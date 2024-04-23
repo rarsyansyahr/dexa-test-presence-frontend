@@ -1,11 +1,10 @@
 import { ApiResponse } from "apisauce";
 import { Api } from "./api";
 import { getGeneralApiProblem } from "./api-problem";
-import { LoginResult, OkResult } from "./api.types";
-import { AppConfig } from "@/config";
+import { LoginResult } from "./api.types";
 import { LoginProps } from "@/types";
 
-export class AuthApi {
+export class EmployeeApi {
   private readonly api: Api;
 
   constructor() {

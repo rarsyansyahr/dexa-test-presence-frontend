@@ -1,3 +1,6 @@
+import { useLastPresence, usePresence } from "@/hooks";
+import { Cookie } from "@/lib";
+import { PresenceStatus } from "@/types";
 import dayjs from "dayjs";
 import { FC } from "react";
 import { LuCheckCircle, LuFingerprint } from "react-icons/lu";
@@ -29,9 +32,26 @@ const PresenceCardItem: FC<{ type: "in" | "out"; value?: string }> = (
   </div>
 );
 
-export const PresenceCard: FC<{ className?: string }> = (props) => {
+export const PresenceCard: FC<{
+  className?: string;
+}> = (props) => {
+  const { className } = props;
+  const { presenceTime: presence, getLastPresence } = useLastPresence(
+    // @ts-ignore
+    Cookie.getEmployeeId()
+  );
+  const { createPresence, isLoading } = usePresence(getLastPresence);
+  // @ts-ignore
+
+  const in_time = presence?.in_time;
+  const out_time = presence?.out_time;
+  const isPresenced = in_time && out_time;
+
+  const onCreatePresence = () =>
+    createPresence(in_time ? PresenceStatus.Out : PresenceStatus.In);
+
   return (
-    <div className={props.className}>
+    <div className={className}>
       <div className="flex flex-row justify-between">
         <div className="md:text-base text-sm">
           {dayjs().format("dddd, DD MMMM YYYY")}
@@ -41,17 +61,23 @@ export const PresenceCard: FC<{ className?: string }> = (props) => {
 
       <div className="w-full">
         <div className="flex flex-row justify-evenly items-center mt-6 md:mt-10">
-          <PresenceCardItem type="in" value={dayjs().format("HH:mm")} />
-          <PresenceCardItem type="out" />
+          <PresenceCardItem type="in" value={presence?.in_time} />
+          <PresenceCardItem type="out" value={presence?.out_time} />
         </div>
 
         <div className="flex justify-center">
           <button
-            className="flex flex-row justify-center items-center md:mt-8 mt-6 bg-indigo-500 px-6 py-4 rounded-md md:w-10/12 w-full text-base md:text-xl shadow-lg text-white uppercase"
-            onClick={() => alert("Masuk")}
+            className={`flex flex-row justify-center items-center md:mt-8 mt-6 ${
+              isPresenced || isLoading ? "bg-gray-300" : "bg-indigo-500"
+            } px-6 py-4 rounded-md md:w-10/12 w-full text-base md:text-xl shadow-lg text-white uppercase`}
+            onClick={onCreatePresence}
+            // @ts-ignore
+            disabled={isPresenced || isLoading}
           >
             <LuFingerprint className="w-5 h-5 mr-1.5 md:w-8 md:h-8 md:mr-2" />{" "}
-            Rekam Pulang
+            {!in_time && "Rekam Datang"}
+            {in_time && !out_time && "Rekam Pulang"}
+            {isPresenced && "Kamu sudah presensi"}
           </button>
         </div>
       </div>

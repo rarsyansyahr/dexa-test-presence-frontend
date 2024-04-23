@@ -3,9 +3,23 @@ export enum UserLevel {
   Hr = "hr",
 }
 
+export enum PresenceStatus {
+  In = "in",
+  Out = "out",
+}
+
 export type LoginProps = {
   email: string;
   password: string;
+};
+
+export type SearchProps = {
+  started_at?: string;
+  ended_at?: string;
+};
+
+export type GetPresencesProps = SearchProps & {
+  employeeId?: string;
 };
 
 type Employee = {
@@ -22,4 +36,14 @@ export type Profile = {
   name: string;
   level: string;
   employee?: Employee;
+};
+
+export type PresenceTime = {
+  in_time?: string;
+  out_time?: string;
+};
+
+export type Presence = PresenceTime & {
+  date: string;
+  created_at: string;
 };

@@ -1,4 +1,3 @@
-import { Cookie, Storage } from "@/lib";
 import { AuthApi } from "@/services/api";
 import { Profile } from "@/types";
 import React, { useState } from "react";
@@ -19,8 +18,6 @@ export const useProfile = () => {
 
       if (kind === "ok") {
         setProfile(result.data);
-      } else {
-        toast.error("Gagal mengambil data profil");
       }
     } catch (error) {
       if (error instanceof Error) toast.error(error.message);

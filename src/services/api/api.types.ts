@@ -1,9 +1,7 @@
-import { Profile, UserLevel } from "@/types";
+import { Presence, PresenceTime, Profile, UserLevel } from "@/types";
 import { GeneralApiProblem } from "./api-problem";
 
-export type OkResult =
-  | { kind: "ok"; data: { message: string } }
-  | GeneralApiProblem;
+export type OkResult = { kind: "ok" } | GeneralApiProblem;
 
 export type LoginResult =
   | {
@@ -22,5 +20,19 @@ export type ProfileResult =
   | {
       kind: "ok";
       data: Profile;
+    }
+  | GeneralApiProblem;
+
+export type LastPresenceResult =
+  | {
+      kind: "ok";
+      data: PresenceTime;
+    }
+  | GeneralApiProblem;
+
+export type PresencesResult =
+  | {
+      kind: "ok";
+      data: Array<Presence>;
     }
   | GeneralApiProblem;

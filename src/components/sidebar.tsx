@@ -103,7 +103,14 @@ const SidebarItem: FC<SidebarItemProps> = (props) => {
       props.logout &&
       confirm("Apakah Anda yakin ingin keluar dari aplikasi ?")
     ) {
-      const cookieKeys = ["user_id", "level", "access_token", "email", "name"];
+      const cookieKeys = [
+        "user_id",
+        "level",
+        "access_token",
+        "email",
+        "name",
+        "employee_id",
+      ];
 
       cookieKeys.forEach((item) => Cookies.remove(item));
       Storage.remove("accessToken");

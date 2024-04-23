@@ -5,6 +5,8 @@ const getAccessToken = () => getCookie("access_token")?.toString();
 
 const getUserId = () => getCookie("user_id")?.toString();
 
+const getEmployeeId = () => getCookie("employee_id")?.toString();
+
 const getEmail = () => getCookie("email")?.toString();
 
 const getLevel = () => getCookie("level")?.toString() as UserLevel;
@@ -26,4 +28,5 @@ export const Cookie = {
   set,
   get,
   remove,
+  getEmployeeId,
 };
