@@ -19,7 +19,7 @@ const EmployeeLayout: FC<PropsWithChildren> = (props) => {
       text: "Karyawan",
       icon: LuUsers,
       link: "/hr/employees",
-      active: path === "/hr/employees",
+      active: path.startsWith("/hr/employees"),
     },
     {
       text: "Rekap Presensi",
@@ -35,7 +35,7 @@ const EmployeeLayout: FC<PropsWithChildren> = (props) => {
 
       <div className="flex flex-col w-full h-full md:p-4 p-3">
         <div className="text-base md:text-lg font-semibold">
-          {menus.find((menu) => menu.link === path)?.text}
+          {menus.find((menu) => menu.link === path)?.text ?? "Detail Karyawan"}
         </div>
 
         <div className="bg-white rounded-md md:px-4 md:py-6 md:mt-3 px-2 py-3 mt-2">

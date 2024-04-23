@@ -37,9 +37,9 @@ const EmployeesPage: FC = () => {
               <TableCell>
                 <Link
                   href={`/hr/employees/${employee.id}`}
-                  className="bg-indigo-400 px-2 py-1 md:px-3 md:py-1.5 rounded-sm text-white text-xs md:text-sm"
+                  className="bg-blue-500 px-2 py-1 md:px-3 md:py-1.5 rounded-sm text-xs md:text-sm text-white"
                 >
-                  Edit
+                  Detail
                 </Link>
               </TableCell>
             </TableRow>

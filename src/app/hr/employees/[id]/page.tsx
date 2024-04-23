@@ -8,6 +8,7 @@ import { FC, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   phone_number: z.string(),
@@ -15,13 +16,15 @@ const schema = z.object({
   photo: z.string().nullable(),
 });
 
-type ProfileForm = {
+type EmployeeForm = {
   phone_number: string;
   password?: string | null;
   photo?: string | null;
 };
 
-const ProfilePage: FC = () => {
+const EmployeeDetail: FC = () => {
+  const router = useRouter();
+
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [image, setImage] = useState<File | null>(null);
 
@@ -33,7 +36,7 @@ const ProfilePage: FC = () => {
     email: "andi@gmail.com",
   };
 
-  const defaultValues: ProfileForm = {
+  const defaultValues: EmployeeForm = {
     phone_number: profile.phone_number,
     password: null,
     photo: null,
@@ -44,7 +47,7 @@ const ProfilePage: FC = () => {
     handleSubmit,
     formState: { isValid },
     reset,
-  } = useForm<ProfileForm>({
+  } = useForm<EmployeeForm>({
     defaultValues,
     resolver: zodResolver(schema),
   });
@@ -160,25 +163,33 @@ const ProfilePage: FC = () => {
           />
         </div>
 
-        <div className="mt-6 md:mt-8 flex flex-row justify-between">
-          {!isEdit && (
-            <Button className="bg-yellow-600" onClick={() => setIsEdit(true)}>
-              Edit
+        <div className="mt-6 md:mt-8 flex flex-row justify-between items-center">
+          <div>
+            <Button
+              type="reset"
+              onClick={() => router.back()}
+              className="mr-2 md:mr-3"
+            >
+              Kembali
             </Button>
-          )}
-          {isEdit && (
-            <>
+
+            {!isEdit && (
+              <Button className="bg-yellow-600" onClick={() => setIsEdit(true)}>
+                Edit
+              </Button>
+            )}
+
+            {isEdit && (
               <Button className="bg-red-500" onClick={onCancel}>
                 Batal
               </Button>
-              <Button
-                type="submit"
-                className="bg-indigo-500"
-                disabled={!isValid}
-              >
-                Simpan Perubahan
-              </Button>
-            </>
+            )}
+          </div>
+
+          {isEdit && (
+            <Button type="submit" className="bg-indigo-500" disabled={!isValid}>
+              Simpan Perubahan
+            </Button>
           )}
         </div>
       </form>
@@ -186,4 +197,4 @@ const ProfilePage: FC = () => {
   );
 };
 
-export default ProfilePage;
+export default EmployeeDetail;
