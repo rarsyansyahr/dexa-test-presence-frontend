@@ -1,18 +1,19 @@
 import clsx from "clsx";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { FC, createContext, useContext, useState } from "react";
 import { IconType } from "react-icons/lib";
 import { LuChevronFirst, LuChevronLast, LuMoreVertical } from "react-icons/lu";
 
-const SidebarContext = createContext({ isExpanded: true });
+const SidebarContext = createContext({ isExpanded: false });
 
 const Sidebar: FC<{
   menus: Array<SidebarItemProps>;
   profile?: boolean;
 }> = (props) => {
   const { menus, profile = true } = props;
-  const [isExpanded, setIsExpanded] = useState<boolean>(true);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
   return (
     <aside className="h-screen">
@@ -99,8 +100,9 @@ const SidebarItem: FC<SidebarItemProps> = (props) => {
   };
 
   return (
-    <li
-      onClick={handleClick}
+    <Link
+      href={props.link ?? "#"}
+      onClick={props.onClick}
       className={clsx(
         `relative flex justify-center items-center md:py-2 md:px-3 py-1.5 px-1 my-0.5 font-medium rounded-md cursor-pointer transition-colors`,
         {
@@ -135,6 +137,6 @@ const SidebarItem: FC<SidebarItemProps> = (props) => {
           {props.text}
         </div>
       )} */}
-    </li>
+    </Link>
   );
 };
